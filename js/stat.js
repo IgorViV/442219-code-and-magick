@@ -40,8 +40,13 @@ window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
   // Пишем заголовок облака: НЕОХОДИМО СДЕЛАТЬ ФУНКЦИЕЙ
+  // var headerCloud = function () {
+
+  // };
+
   ctx.fillStyle = '#000';
   ctx.font = currentFont;
+  ctx.textBaseline = 'handing';
   ctx.fillText('Ура Вы победили!', CLOUD_X + 50, CLOUD_Y + MARGIN_HEIGHT);
   ctx.fillText('Список результатов:', CLOUD_X + 50, CLOUD_Y + MARGIN_HEIGHT + fontGap);
 
@@ -62,11 +67,32 @@ window.renderStatistics = function (ctx, names, times) {
     return 'hsla(240, ' + saturate + '%, 50%, 1)';
   };
 
+  // Расчет ширины гистограммы и боковых полей для центровки гистограммы:
+  var widthHistogram = (GRAPH_WIDTH + GAP_GRAPH) * names.length;
+  var paddingHistogram = (CLOUD_WIDTH - widthHistogram) / 2;
+
+  // Функция расчета координаты X колонки:
+  var coordinateGraphX = function (indexGraph) {
+    var coordinateX = CLOUD_X + MARGIN_SIDE + paddingHistogram;
+    coordinateX += (GRAPH_WIDTH + GAP_GRAPH) * indexGraph;
+
+    return coordinateX;
+  };
+
+  // Функция расчета координаты Y колонки:
+  var coordinateGraphY = function (maxGraph, arrTimes, indexTimes) {
+    var coordinateY = (CLOUD_HEIGHT + CLOUD_Y) - (MARGIN_HEIGHT + FONT_SIZE) - (GRAPH_HEIGHT_MAX * arrTimes[indexTimes]) / maxGraph;
+
+    return coordinateY;
+  };
+
   // Строим гистограмму:
   for (var i = 0; i < names.length; i++) {
+
     ctx.fillStyle = '#000';
-    ctx.fillText(Math.round(times[i]), CLOUD_X + MARGIN_SIDE + (GRAPH_WIDTH + GAP_GRAPH) * i, CLOUD_HEIGHT + CLOUD_Y - (MARGIN_HEIGHT + (GRAPH_HEIGHT_MAX * times[i]) / maxTime + FONT_SIZE + fontGap * 2));
-    ctx.fillText(names[i], CLOUD_X + MARGIN_SIDE + (GRAPH_WIDTH + GAP_GRAPH) * i, CLOUD_HEIGHT + CLOUD_Y - MARGIN_HEIGHT);
+    ctx.textBaseline = 'handing';
+    ctx.fillText(Math.round(times[i]), coordinateGraphX(i), coordinateGraphY(maxTime, times, i) - fontGap);
+    ctx.fillText(names[i], coordinateGraphX(i), CLOUD_HEIGHT + CLOUD_Y - MARGIN_HEIGHT);
 
     // Устанавливаем цвет колонок:
     if (names[i] === 'Вы') {
@@ -75,6 +101,6 @@ window.renderStatistics = function (ctx, names, times) {
       ctx.fillStyle = getRandomSaturate();
     }
 
-    ctx.fillRect(CLOUD_X + MARGIN_SIDE + (GRAPH_WIDTH + GAP_GRAPH) * i, CLOUD_HEIGHT + CLOUD_Y - (MARGIN_HEIGHT + (GRAPH_HEIGHT_MAX * times[i]) / maxTime + FONT_SIZE + fontGap), GRAPH_WIDTH, (GRAPH_HEIGHT_MAX * times[i]) / maxTime);
+    ctx.fillRect(coordinateGraphX(i), coordinateGraphY(maxTime, times, i), GRAPH_WIDTH, (GRAPH_HEIGHT_MAX * times[i] / maxTime));
   }
 };

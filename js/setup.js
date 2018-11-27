@@ -9,7 +9,7 @@ var SURNAMES_PERSONAL = ['да Марья', 'Верон', 'Мирабелла', 
 var COATS_PERSONAL = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_PERSONAL = ['black', 'red', 'blue', 'yellow', 'green'];
 
-// Функция генерации случайного числа в указанном диапазоне:
+// Функция генерации случайного числа от нуля до указанного значения:
 var randomNumber = function (maxNumber) {
   var currentNumber = Math.floor(Math.random() * maxNumber);
 
@@ -33,7 +33,7 @@ var personalName = function (arrNames, arrSurnames) {
   return name;
 };
 
-// Функция создания объекта:
+// Функция создания персонажа:
 var createPersonal = function (names, surnames, coats, eyes) {
   var personal = {};
   personal.name = personalName(names, surnames);
@@ -43,7 +43,7 @@ var createPersonal = function (names, surnames, coats, eyes) {
   return personal;
 };
 
-// Функция создания массива объектов:
+// Функция создания листа с персонажами:
 var createArrPersonals = function (arrLength, arrNames, arrSurnames, arrCoats, arrEyes) {
   var arrPersonals = [];
   for (var i = 0; i < arrLength; i++) {
@@ -53,7 +53,7 @@ var createArrPersonals = function (arrLength, arrNames, arrSurnames, arrCoats, a
   return arrPersonals;
 };
 
-// Массив, состоящий из 4 сгенерированных JS объектов, свойств персонажей:
+// Лист, состоящий из 4 сгенерированных персонажей:
 var personals = createArrPersonals(4, NAMES_PERSONAL, SURNAMES_PERSONAL, COATS_PERSONAL, EYES_PERSONAL);
 
 // Создаем персонажей на основе шаблона и присваиваем им случайные свойства:

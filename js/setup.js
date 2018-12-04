@@ -1,9 +1,14 @@
 'use strict';
 
-// Открытие/закрытие окна настройки персонажа:
+var NAMES_PERSONAL = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var SURNAMES_PERSONAL = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COATS_PERSONAL = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var EYES_PERSONAL = ['black', 'red', 'blue', 'yellow', 'green'];
+var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var ESC_CODE = 27;
 var ENTER_CODE = 13;
 
+// Открытие/закрытие окна настройки персонажа:
 var buttonSetupOpen = document.querySelector('.setup-open');
 var blockSetup = document.querySelector('.setup');
 var buttonSetupClose = blockSetup.querySelector('.setup-close');
@@ -52,13 +57,6 @@ setupUserName.addEventListener('focus', function () {
 setupUserName.addEventListener('blur', function () {
   document.addEventListener('keydown', onModalEscPress);
 });
-
-// Исходные данные для персонажей:
-var NAMES_PERSONAL = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var SURNAMES_PERSONAL = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COATS_PERSONAL = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var EYES_PERSONAL = ['black', 'red', 'blue', 'yellow', 'green'];
-var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
 // Функция генерации случайного числа от нуля до указанного значения:
 var randomNumber = function (maxNumber) {

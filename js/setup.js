@@ -127,9 +127,9 @@ setupSimilar.classList.remove('hidden');
 // Изменяем цвет мантии, глаз и фаирбола персонажа по нажатию:
 
 var selectColor = function (arrColor) { // Функция выбора произвольного цвета
-  var curentColor = arrColor[randomNumber(arrColor.length)];
+  var currentColor = arrColor[randomNumber(arrColor.length)];
 
-  return curentColor;
+  return currentColor;
 };
 
 var wizardSetup = document.querySelector('.setup-wizard');

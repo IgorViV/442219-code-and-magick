@@ -13,6 +13,7 @@ var buttonSetupOpen = document.querySelector('.setup-open');
 var blockSetup = document.querySelector('.setup');
 var buttonSetupClose = blockSetup.querySelector('.setup-close');
 var setupUserName = blockSetup.querySelector('.setup-user-name');
+var setupBeginPosition = {left: 0, top: 0};
 
 var onModalEscPress = function (evt) {
   if (evt.keyCode === ESC_CODE) {
@@ -23,11 +24,15 @@ var onModalEscPress = function (evt) {
 var modalOpen = function () {
   blockSetup.classList.remove('hidden');
   document.addEventListener('keydown', onModalEscPress);
+  setupBeginPosition = {left: blockSetup.offsetLeft, top: blockSetup.offsetTop};
 };
 
 var modalClose = function () {
   blockSetup.classList.add('hidden');
   document.removeEventListener('keydown', onModalEscPress);
+
+  blockSetup.style.top = setupBeginPosition.top + 'px';
+  blockSetup.style.left = setupBeginPosition.left + 'px';
 };
 
 buttonSetupOpen.addEventListener('click', function () {

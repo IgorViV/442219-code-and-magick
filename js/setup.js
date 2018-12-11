@@ -13,6 +13,7 @@ var buttonSetupOpen = document.querySelector('.setup-open');
 var blockSetup = document.querySelector('.setup');
 var buttonSetupClose = blockSetup.querySelector('.setup-close');
 var setupUserName = blockSetup.querySelector('.setup-user-name');
+var defaultPosition = {left: 0, top: 0};
 
 var onModalEscPress = function (evt) {
   if (evt.keyCode === ESC_CODE) {
@@ -23,11 +24,15 @@ var onModalEscPress = function (evt) {
 var modalOpen = function () {
   blockSetup.classList.remove('hidden');
   document.addEventListener('keydown', onModalEscPress);
+  defaultPosition = {left: blockSetup.offsetLeft, top: blockSetup.offsetTop};
 };
 
 var modalClose = function () {
   blockSetup.classList.add('hidden');
   document.removeEventListener('keydown', onModalEscPress);
+
+  blockSetup.style.top = defaultPosition.top + 'px';
+  blockSetup.style.left = defaultPosition.left + 'px';
 };
 
 buttonSetupOpen.addEventListener('click', function () {
@@ -127,9 +132,9 @@ setupSimilar.classList.remove('hidden');
 // Изменяем цвет мантии, глаз и фаирбола персонажа по нажатию:
 
 var selectColor = function (arrColor) { // Функция выбора произвольного цвета
-  var curentColor = arrColor[randomNumber(arrColor.length)];
+  var currentColor = arrColor[randomNumber(arrColor.length)];
 
-  return curentColor;
+  return currentColor;
 };
 
 var wizardSetup = document.querySelector('.setup-wizard');

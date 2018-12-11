@@ -5,14 +5,12 @@ var setup = document.querySelector('.setup');
 var setupUserHandle = setup.querySelector('.upload');
 
 setupUserHandle.addEventListener('mousedown', function (evt) {
-  evt.preventDefault();
 
   var startPosition = {x: evt.clientX, y: evt.clientY};
 
   var dragged = false;
 
   var mouseMoveHandler = function (moveEvt) {
-    moveEvt.preventDefault();
     dragged = true;
 
     var shift = {x: startPosition.x - moveEvt.clientX, y: startPosition.y - moveEvt.clientY};
@@ -23,8 +21,7 @@ setupUserHandle.addEventListener('mousedown', function (evt) {
     setup.style.left = (setup.offsetLeft - shift.x) + 'px';
   };
 
-  var mouseUpHandler = function (upEvt) {
-    upEvt.preventDefault();
+  var mouseUpHandler = function () {
 
     document.removeEventListener('mousemove', mouseMoveHandler);
     document.removeEventListener('mouseup', mouseUpHandler);

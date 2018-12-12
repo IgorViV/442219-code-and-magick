@@ -12,10 +12,11 @@ var MARGIN_SIDE = 30;// поля по бокам
 var MARGIN_HEIGHT = 15;// поля сверху и снизу
 var FONT_SIZE = 16;// размер шрифта
 var FONT_FAMILY = 'PT Mono';// семейство шрифтов
+var TITLE_CLOUD = 'Ура Вы победили! Список результатов:'; // заголовок окна результатов
 var fontGap = Math.round(FONT_SIZE * 1.0);// межстрочный интервал
 var currentFont = FONT_SIZE + 'px ' + FONT_FAMILY;// текущий шрифт
 
-// Функция для отрисовки облака с тенью:
+// Функция для отрисовки окна с тенью:
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
@@ -23,32 +24,40 @@ var renderCloud = function (ctx, x, y, color) {
 
 // Расчет максимального значения параметра:
 var getMaxElement = function (arr) {
-  // var maxElement = arr[0];
-
-  // for (var i = 0; i < arr.length; i++) {
-  //   if (arr[i] > maxElement) {
-  //     maxElement = arr[i];
-  //   }
-  // }
 
   return Math.max.apply(null, arr);
 };
 
 window.renderStatistics = function (ctx, names, times) {
-// Рисуем облако с тенью:
+  // Рисуем окно вывода результатов:
   renderCloud(ctx, CLOUD_X + GAP_SHADOW, CLOUD_Y + GAP_SHADOW, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
-  // Пишем заголовок облака: НЕОХОДИМО СДЕЛАТЬ ФУНКЦИЕЙ
-  // var headerCloud = function () {
-
-  // };
+  // Пишем заголовок окна вывода результатов:
+  var drawTitleCloud = function (context, text, marginLeft, marginTop, maxWidth, lineHeight) {
+    var words = text.split(' ');
+    var countWords = words.length;
+    var line = '';
+    context.textAlign = 'center';
+    for (var i = 0; i < countWords; i++) {
+      var testLine = line + words[i] + ' ';
+      var testWidth = context.measureText(testLine).width;
+      if (testWidth > maxWidth) {
+        context.fillText(line, marginLeft, marginTop);
+        line = words[i] + ' ';
+        marginTop += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    context.fillText(line, marginLeft, marginTop);
+  };
 
   ctx.fillStyle = '#000';
   ctx.font = currentFont;
   ctx.textBaseline = 'handing';
-  ctx.fillText('Ура Вы победили!', CLOUD_X + 50, CLOUD_Y + MARGIN_HEIGHT);
-  ctx.fillText('Список результатов:', CLOUD_X + 50, CLOUD_Y + MARGIN_HEIGHT + fontGap);
+
+  drawTitleCloud(ctx, TITLE_CLOUD, CLOUD_X + CLOUD_WIDTH / 2, CLOUD_Y + MARGIN_HEIGHT * 1.5, CLOUD_WIDTH - MARGIN_SIDE * 7, fontGap);
 
   // Проверяем равенство массивов names и times:
   if (names.length > times.length) {
@@ -91,6 +100,7 @@ window.renderStatistics = function (ctx, names, times) {
 
     ctx.fillStyle = '#000';
     ctx.textBaseline = 'handing';
+    ctx.textAlign = 'start';
     ctx.fillText(Math.round(times[i]), coordinateGraphX(i), coordinateGraphY(maxTime, times, i) - fontGap);
     ctx.fillText(names[i], coordinateGraphX(i), CLOUD_HEIGHT + CLOUD_Y - MARGIN_HEIGHT);
 

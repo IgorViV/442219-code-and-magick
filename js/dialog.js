@@ -1,5 +1,5 @@
 'use strict';
-// Модуль открытие/закрытие и перетаскивания окна настройки персонажа:
+
 (function () {
 
   var blockSetup = document.querySelector('.setup');

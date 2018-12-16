@@ -1,57 +1,50 @@
 'use strict';
 
 (function () {
-  // Функция генерации имени персонажа:
-  var personalName = function (arrNames, arrSurnames) {
-    while (arrNames.length !== arrSurnames.length) {
-      if (arrNames.length > arrSurnames.length) {
-        arrSurnames.push('Иванов');
-      } else if (arrNames.length < arrSurnames.length) {
-        arrNames.push('Иван');
-      }
-    }
-
-    var indexName = window.util.randomNumber(arrNames.length);
-    var indexSurname = window.util.randomNumber(arrSurnames.length);
-    var name = arrNames[indexName] + ' ' + arrSurnames[indexSurname];
-
-    return name;
-  };
-
-  // Функция создания персонажа:
-  var createPersonal = function (names, surnames, coats, eyes) {
-    var personal = {};
-    personal.name = personalName(names, surnames);
-    personal.coatColor = coats[window.util.randomNumber(coats.length)];
-    personal.eyesColor = eyes[window.util.randomNumber(eyes.length)];
-
-    return personal;
-  };
-
-  // Функция создания листа с персонажами:
-  var createArrPersonals = function (arrLength, arrNames, arrSurnames, arrCoats, arrEyes) {
-    var arrPersonals = [];
-    for (var i = 0; i < arrLength; i++) {
-      arrPersonals[i] = createPersonal(arrNames, arrSurnames, arrCoats, arrEyes);
-    }
-
-    return arrPersonals;
-  };
-
-  // Лист, состоящий из 4 сгенерированных персонажей:
-  var personals = createArrPersonals(4, window.data.namesPersonal, window.data.surnamesPersonal, window.data.coatsColorPersonal, window.data.eyesColorPersonal);
-
-  // Создаем персонажей на основе шаблона и присваиваем им случайные свойства:
+  // Создаем персонажей на основе шаблона и полученных от сервера данных:
   var similarListElement = document.querySelector('.setup-similar-list');
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template')
-    .content
-    .querySelector('.setup-similar-item');
+  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 
-  for (var i = 0; i < 4; i++) {
+  var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
-    wizardElement.querySelector('.setup-similar-label').textContent = personals[i].name;
-    wizardElement.querySelector('.wizard-coat').style.fill = personals[i].coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = personals[i].eyesColor;
-    similarListElement.appendChild(wizardElement);
-  }
+    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
+
+    return wizardElement;
+  };
+
+  var onLoad = function (wizards) {
+    var fragment = document.createDocumentFragment();
+    var index = window.util.randomNumber(wizards.length - 4); // выбор произвольной четвертки волшебников
+
+    var message = document.querySelector('.setup-message__wizards');
+    if (wizards && message) {
+      message.style.display = 'none';
+    }
+
+    for (var i = index; i < index + 4; i++) {
+      fragment.appendChild(renderWizard(wizards[i]));
+    }
+
+    similarListElement.appendChild(fragment);
+
+    // Показываем блок выбора персонажа:
+    var setupSimilar = document.querySelector('.setup-similar');
+    setupSimilar.classList.remove('hidden');
+  };
+
+  var onError = function (errorMessage) { // выводим сообщение об ошибки передачи данных
+    var tagError = document.createElement('div');
+    tagError.className = 'setup-message__wizards';
+    tagError.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    tagError.style.position = 'absolute';
+    tagError.style.left = 0;
+    tagError.style.right = 0;
+    tagError.style.fontSize = '30px';
+    tagError.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', tagError);
+  };
+
+  window.backend.load(onLoad, onError);
 })();

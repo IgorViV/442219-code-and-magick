@@ -1,10 +1,6 @@
 'use strict';
 
 (function () {
-  // Показываем блок выбора персонажа:
-  var setupSimilar = document.querySelector('.setup-similar');
-  setupSimilar.classList.remove('hidden');
-
   // Изменяем цвет мантии, глаз и фаирбола персонажа по нажатию:
 
   var selectColor = function (arrColor) { // Функция выбора произвольного цвета

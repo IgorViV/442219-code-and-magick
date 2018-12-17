@@ -7,6 +7,7 @@
   var buttonSetupOpen = document.querySelector('.setup-open');
   var buttonSetupClose = blockSetup.querySelector('.setup-close');
   var setupUserName = blockSetup.querySelector('.setup-user-name');
+  var form = blockSetup.querySelector('.setup-wizard-form');
   var defaultPosition = {left: 0, top: 0};
 
   var onModalEscPress = function (evt) {
@@ -49,6 +50,32 @@
 
   setupUserName.addEventListener('blur', function () {
     document.addEventListener('keydown', onModalEscPress);
+  });
+
+  form.addEventListener('submit', function (evt) {
+    var onLoad = function () {
+      blockSetup.classList.add('hidden');
+    };
+
+    var onError = function (errorMessage) {
+      var dialogFooter = document.querySelector('.setup-footer');
+      var tagError = document.createElement('div');
+      dialogFooter.style.position = 'relative';
+      tagError.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+      tagError.style.position = 'absolute';
+      tagError.style.top = 0;
+      tagError.style.left = 0;
+      tagError.style.right = 0;
+      tagError.style.fontSize = '30px';
+      tagError.textContent = errorMessage;
+      dialogFooter.appendChild(tagError);
+      setTimeout(function () {
+        tagError.parentNode.removeChild(tagError);
+      }, 5000);
+    };
+
+    window.backend.save(new FormData(form), onLoad, onError);
+    evt.preventDefault();
   });
 
   // Перетаскивание диалога редактирования персонажа (draggable)

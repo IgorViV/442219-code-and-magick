@@ -53,19 +53,14 @@
   });
 
   form.addEventListener('submit', function (evt) {
-    var onLoad = function (response) {
+    var onLoad = function () {
       blockSetup.classList.add('hidden');
-      var message = document.querySelector('.setup-message');
-      if (response && message) {
-        message.style.display = 'none';
-      }
     };
 
     var onError = function (errorMessage) {
       var dialogFooter = document.querySelector('.setup-footer');
       var tagError = document.createElement('div');
       dialogFooter.style.position = 'relative';
-      tagError.className = 'setup-message';
       tagError.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
       tagError.style.position = 'absolute';
       tagError.style.top = 0;
@@ -74,6 +69,9 @@
       tagError.style.fontSize = '30px';
       tagError.textContent = errorMessage;
       dialogFooter.appendChild(tagError);
+      setTimeout(function () {
+        tagError.parentNode.removeChild(tagError);
+      }, 5000);
     };
 
     window.backend.save(new FormData(form), onLoad, onError);

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  // Создаем персонажей на основе шаблона и полученных от сервера данных:
+  // Модуль отрисовки персонажей на основе шаблона и полученных от сервера данных:
   var similarListElement = document.querySelector('.setup-similar-list');
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 
@@ -16,12 +16,8 @@
 
   var onLoad = function (wizards) {
     var fragment = document.createDocumentFragment();
+    var setupSimilar = document.querySelector('.setup-similar');
     var index = window.util.randomNumber(wizards.length - 4); // выбор произвольной четвертки волшебников
-
-    // var message = document.querySelector('.setup-message__wizards');
-    // if (wizards && message) {
-    //   message.style.display = 'none';
-    // }
 
     for (var i = index; i < index + 4; i++) {
       fragment.appendChild(renderWizard(wizards[i]));
@@ -30,7 +26,6 @@
     similarListElement.appendChild(fragment);
 
     // Показываем блок выбора персонажа:
-    var setupSimilar = document.querySelector('.setup-similar');
     setupSimilar.classList.remove('hidden');
   };
 
